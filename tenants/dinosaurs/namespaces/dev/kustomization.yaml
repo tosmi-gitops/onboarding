@@ -1,0 +1,11 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+commonAnnotations:
+    argocd.argoproj.io/sync-wave: "1"
+
+namespace: dinosaurs-dev
+
+resources:
+  - namespace.yaml
+  - https://github.com/tosmi-gitops/onboarding-base/overlays/small?rev=v0.0.2
