@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: dinosaurs-onboarding
+spec:
+  generators:
+    - git:
+        pathParamPrefix: cluster
+        repoURL: https://github.com/tosmi-gitops/onboarding.git
+        revision: HEAD
+        directories:
+          - path: tenants/dinosaurs/clusters/*
+  template:
+    metadata:
+      name: 'dinosaurs-{{cluster.path.basename}}-onboarding'
+    spec:
+      project: onboarding
+      source:
+        repoURL: https://github.com/tosmi-gitops/onboarding.git
+        targetRevision: HEAD
+        path: tenants/dinosaurs/clusters/{{cluster.path.basename}}
+      destination:
+        name: '{{cluster.path.basename}}'
