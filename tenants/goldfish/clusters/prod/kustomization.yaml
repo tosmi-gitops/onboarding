@@ -1,0 +1,9 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+resources:
+  - ../../namespaces/cicd
+
+
+# here we could patch the cicd namespaces for the hub cluster
+patches:
