@@ -17,8 +17,9 @@ spec:
               repoURL: https://github.com/tosmi-gitops/onboarding.git
               revision: HEAD
               directories:
-                # - path: tenants/{{tenants.path.basename}}/clusters/*
-                - path: tenants/*/clusters/*
+                - path: tenants/{{tenants.path.basename}}/clusters/*
+                # does not work
+                # - path: tenants/*/clusters/*
   template:
     metadata:
       name: '{{tenants.path.basename}}-{{cluster.path.basename}}-onboarding'
