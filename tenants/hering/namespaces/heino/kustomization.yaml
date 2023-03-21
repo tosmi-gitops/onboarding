@@ -1,0 +1,11 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+commonAnnotations:
+    argocd.argoproj.io/sync-wave: "0"
+
+namespace: heino
+
+resources:
+  - namespace.yaml
+  - https://github.com/tosmi-gitops/onboarding-base/overlays/large?rev=v0.0.3
