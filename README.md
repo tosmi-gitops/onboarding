@@ -13,6 +13,7 @@ helm (see [here](#tools-used)).
 * [Requirements considered](#requirements-considered)
 * [Tools used](#tools-used)
 * [Tenants organization](#tenants-organization)
+* [Sharing a common base of configurations](#sharing-a-common-base-of-configurations)
 * [Additional Folders](#additional-folders)
 * [OpenShift Gitops](#openshift-gitops)
 
