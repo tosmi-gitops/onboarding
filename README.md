@@ -16,8 +16,8 @@ helm (see [here](#tools-used)).
 
 ## General scheme
 
-The purpose of onboarding is to provide an automated way of creating
-required OpenShift resources like
+The purpose of platform onboarding is to provide an automated way of
+creating required OpenShift resources like
 
 - namespaces
 - quotas
@@ -26,7 +26,7 @@ required OpenShift resources like
 for developer teams and application operations teams.
 
 Yes we know this is not DevOps, but corresponds to things we see in
-real life. But what exactly is DevOps?
+real life. But what exactly is DevOps anyways?
 
 We defined two repositories:
 
@@ -34,7 +34,7 @@ We defined two repositories:
 - [Onboarding](https://github.com/tosmi-gitops/onboarding-base.git)
 
 [Onboarding-base](https://github.com/tosmi-gitops/onboarding-base.git)
-is used to provide manifests reused for all other tenants (see
+is used to provide manifests reused for all tenants (see
 [Nomenclature](#nomenclature)).
 
 [Onboarding](https://github.com/tosmi-gitops/onboarding-base.git)
@@ -47,10 +47,11 @@ contains manifest for the actual onboarding of tenants.
 
 ## Use cases considered
 
-1. As developer I would like to get a namespace in a DEV cluster
-2. As application ops I would like to create a namespace in the DEV cluster
-3. As application ops I would like to create a namespace in the PROD cluster
-4. As application ops I would like to overwrite namespace defaults depending on clusters
+1. As developer I would like to get namespaces in a DEV cluster
+2. As application ops I would like to create namespaces in the DEV cluster
+3. As application ops I would like to create namespaces in the PROD cluster
+4. As application ops I would like to overwrite namespace defaults
+   depending on clusters
 
 ## Requirements considered
 
@@ -99,3 +100,14 @@ The following diagram depicts connections between clusters, namespaces
 and the onboarding-base repository:
 
 ![connections](https://raw.githubusercontent.com/tosmi-gitops/onboarding/main/docs/connections.png)
+
+## OpenShift Gitops
+
+OpenShift GitOps leverages ArgoCD to sync Kubernetes manifests from a
+GIT repository to a cluster.
+
+An ArgoCD `Application` defines which repository to sync into which cluster.
+
+ArgoCD uses projects to organize differe
+
+Specifically we use ApplicationSets to
