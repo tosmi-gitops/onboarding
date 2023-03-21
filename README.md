@@ -149,7 +149,7 @@ following t-shirt shape sizes for projects:
 
 Because of using kustomize, there are ways to overwrite base
 settings. For example in the CI/CD namespace for the
-[goldfish](https://github.com/tosmi-gitops/onboarding/blob/main/tenants/goldfish/namespaces/cicd/kustomization.yaml)
+[goldfish](https://github.com/tosmi-gitops/onboarding/blob/main/tenants/goldfish/namespaces/cicd/kustomization.yaml#L14)
 project we use the medium overlay from `onboarding-base`, but
 overwrite the memory limit to 7Gi.
 
