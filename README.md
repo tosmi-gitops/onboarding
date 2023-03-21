@@ -1,7 +1,18 @@
 # Cluster Onboarding
 
-This repository contains an example for OpenShift project Onboarding via GitOps.
-It's implemented with kustomize, but could be probably also done via helm.
+This repository contains an example implementation of OpenShift
+project onboarding via GitOps.  It's implemented with
+[kustomize](https://kustomize.io), but could be probably also done via
+helm (see [here](#tools-used)).
+
+## Table of contents
+
+* [General scheme](#general-scheme)
+* [Nomenclature](#nomenclature)
+* [Use cases considered](#use-cases-considered)
+* [Requirements considered](#requirements-considered)
+* [Tools used](#tools-used)
+* [Tenants organization](#tenants-organization)
 
 ## General scheme
 
