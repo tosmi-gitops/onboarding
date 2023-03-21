@@ -1,14 +1,45 @@
-# Cluster onboarding
+# Cluster Onboarding
 
-This repository conatins an example for OpenShift project onboarding via GitOps.
+This repository contains an example for OpenShift project Onboarding via GitOps.
 It's implemented with kustomize, but could be probably also done via helm.
+
+## General scheme
+
+The purpose of onboarding is to provide an automated way of creating
+required OpenShift resources like
+
+- namespaces
+- quotas
+- network policies
+
+for developer teams and application operations teams.
+
+Yes we know this is not DevOps, but corresponds to things we see in
+real life. But what exactly is DevOps?
+
+We defined two repositories:
+
+- [Onboarding-base](https://github.com/tosmi-gitops/onboarding-base.git)
+- [Onboarding](https://github.com/tosmi-gitops/onboarding-base.git)
+
+[Onboarding-base](https://github.com/tosmi-gitops/onboarding-base.git)
+is used to provide manifests reused for all other tenants (see
+[Nomenclature](#nomenclature)).
+
+[Onboarding](https://github.com/tosmi-gitops/onboarding-base.git)
+contains manifest for the actual onboarding of tenants.
+
+## Nomenclature
+
+- Tenant: A team that requires OpenShift resources in one or more clusters.
+- Cluster: An OpenShift cluster managed by a platform team
 
 ## Use cases considered
 
 1. As developer I would like to get a namespace in a DEV cluster
 2. As application ops I would like to create a namespace in the DEV cluster
 3. As application ops I would like to create a namespace in the PROD cluster
-4. As application ops I would like to overwrite namespace defaults
+4. As application ops I would like to overwrite namespace defaults depending on clusters
 
 ## Requirements considered
 
@@ -16,10 +47,18 @@ It's implemented with kustomize, but could be probably also done via helm.
 2. Not all namespaces are in all clusters
 3. Namespaces might have different settings per cluster
    e.g.
-    - cicd ns on cluster dev is allowed to create 100 pods
-	- cicd ns on cluster prod is allowed to create 10 pods
+    - cicd namespace on cluster dev is allowed to create 100 pods
+	- cicd namespace on cluster prod is allowed to create 10 pods
 
-## Directory layout
+## Tools used
+
+We only require Kustomize for rendering manifests to onboard
+tenants. Helm is also possible and there are examples available see
+[helper-proj-onboarding](https://github.com/tjungbauer/helm-charts/tree/main/charts/helper-proj-onboarding)
+and the customers folder in
+[openshift-cluster-bootstrap](https://github.com/tjungbauer/openshift-cluster-bootstrap/tree/main/customers)
+
+## Tenants organization
 
 ```
 tenants/
@@ -36,3 +75,11 @@ tenants/
     └── namespaces
         └── cicd
 ```
+
+Every new tenant that requires onboarding is represented by a folder
+in the `tenants` directory.
+
+Within tenants we have a `clusters/` folder for every cluster the
+tenant should be able to use. In the corresponding cluster folder
+(e.g. `prod`) we include namespaces that the cluster requires from the
+`namespaces/` folder.
