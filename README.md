@@ -60,7 +60,7 @@ contains manifest for the actual onboarding of tenants.
 
 ## Requirements considered
 
-1. A tenant as one to many namespaces
+1. A tenant has one to many namespaces
 2. Not all tenant namespaces are in all clusters
 3. Namespaces might have different settings per cluster
    e.g.
@@ -75,6 +75,9 @@ available, see
 [helper-proj-onboarding](https://github.com/tjungbauer/helm-charts/tree/main/charts/helper-proj-onboarding)
 and the customers folder in
 [openshift-cluster-bootstrap](https://github.com/tjungbauer/openshift-cluster-bootstrap/tree/main/customers)
+
+Kustomize allows use to deploy any Kubernetes manifest in any folder
+and also patching of existing manifest if there's the need.
 
 ## Tenants organization
 
@@ -101,13 +104,49 @@ in the `tenants` directory.
 
 Within tenants we have a `clusters/` folder for every cluster the
 tenant should be able to use. In the corresponding cluster folder
-(e.g. `prod`) we include namespaces that the cluster requires from the
-`namespaces/` folder.
+(e.g. `dinosaurs/clusters/prod`) we include namespaces that the cluster requires
+from the `dinosaurs/namespaces/` folder.
 
 The following diagram depicts connections between clusters, namespaces
 and the onboarding-base repository:
 
 ![connections](https://raw.githubusercontent.com/tosmi-gitops/onboarding/main/docs/connections.png)
+
+## Sharing a common base of configurations
+
+Namespaces in `<tenants>/<tenant name>/namespaces` a sharing a common
+base. The base is in a separate GIT repository
+[onboarding-base](https://github.com/tosmi-gitops/onboarding-base.git).
+
+Technically `onboarding-base` could be stored in the same repository
+as `onboarding` but we have reasons to use a dedicated repository:
+
+- **Making changes to base explicit**: changes in the common base for
+  all namespace is potentially a dangerous operation. It could effect
+  **all namespaces** on **all cluster**.
+
+  We think that having this common base in a dedicated repository
+  strengthens the awareness for this risk.
+
+- **Allow usage of dedicated tags / releases**: We use tags to
+  reference a (hopefully ) frozen state of the `onboarding-base`
+  repository. If `onboarding-base` changes upstream the changes will
+  not effect downstream configuration. See for example
+  [here](https://github.com/tosmi-gitops/onboarding/blob/main/tenants/dinosaurs/namespaces/cicd/kustomization.yaml).
+
+`onboarding-base` is a way to share common configurations, relevant
+for all namespaces in all clusters. For example it defines the
+following t-shirt shape sizes for projects:
+
+- [small](https://github.com/tosmi-gitops/onboarding-base/tree/main/overlays/small)
+- [medium](https://github.com/tosmi-gitops/onboarding-base/tree/main/overlays/medium)
+- [large](https://github.com/tosmi-gitops/onboarding-base/tree/main/overlays/large)
+
+Because of using kustomize, there are several ways to overwrite base
+settings. For example in the CI/CD namespace for the
+[goldfish](https://github.com/tosmi-gitops/onboarding/blob/main/tenants/goldfish/namespaces/cicd/kustomization.yaml)
+project we use the medium overlay from `onboarding-base`, but
+overwrite the memory limit to 7Gi.
 
 ## Additional Folders
 
