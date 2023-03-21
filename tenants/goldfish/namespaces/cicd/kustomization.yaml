@@ -18,4 +18,4 @@ patches:
     patch: |-
       - op: replace
         path: /spec/hard/limits.memory
-        value: 8Gi
+        value: 7Gi
