@@ -87,4 +87,4 @@ tenant should be able to use. In the corresponding cluster folder
 The following diagram depicts connections between clusters, namespaces
 and the onboarding-base repository:
 
-![connections](https://github.com/tosmi-gitops/onboarding/docs/connections.png)
+![connections](https://raw.githubusercontent.com/tosmi-gitops/onboarding/main/docs/connections.png)
