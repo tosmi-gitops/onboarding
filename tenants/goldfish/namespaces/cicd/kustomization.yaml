@@ -9,3 +9,13 @@ namespace: goldfish-cicd
 resources:
   - namespace.yaml
   - https://github.com/tosmi-gitops/onboarding-base/overlays/medium?rev=v0.0.3
+
+# we use the medium base project, but overwrite limit.memory
+patches:
+  - target:
+      kind: ResourceQuota
+      name: quota-medium
+    patch: |-
+      - op: replace
+        path: /spec/hard/limits.memory
+        value: 8Gi
