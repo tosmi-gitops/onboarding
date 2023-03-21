@@ -45,7 +45,7 @@ contains manifest for the actual onboarding of tenants.
 
 ## Nomenclature
 
-- Tenant: A team that requires OpenShift resources in one or more clusters.
+- Tenant: A team requiring OpenShift resources in one or more clusters.
 - Cluster: An OpenShift cluster managed by a platform team
 
 ## Use cases considered
@@ -100,13 +100,14 @@ tenants/
         └── cicd
 ```
 
-Every new tenant that requires onboarding is represented by a folder
-in the `tenants` directory.
+Every new tenant requiring onboarding is represented by a folder in
+the `tenants` directory.
 
 Within tenants we have a `clusters/` folder for every cluster the
 tenant should be able to use. In the corresponding cluster folder
-(e.g. `dinosaurs/clusters/prod`) we include namespaces that the cluster requires
-from the `dinosaurs/namespaces/` folder.
+(e.g. `dinosaurs/clusters/prod`) we include namespaces that should be
+deployed to clusters. Those namespaces are defined in
+`dinosaurs/namespaces/`.
 
 The following diagram depicts connections between clusters, namespaces
 and the onboarding-base repository:
@@ -122,7 +123,7 @@ base. The base is in a separate GIT repository
 Technically `onboarding-base` could be stored in the same repository
 as `onboarding` but we have reasons to use a dedicated repository:
 
-- **Making changes to base explicit**: changes in the common base for
+- **Making changes to base explicit**: changes to the common base for
   all namespace is potentially a dangerous operation. It could effect
   **all namespaces** on **all cluster**.
 
@@ -132,8 +133,11 @@ as `onboarding` but we have reasons to use a dedicated repository:
 - **Allow usage of dedicated tags / releases**: We use tags to
   reference a (hopefully ) frozen state of the `onboarding-base`
   repository. If `onboarding-base` changes upstream the changes will
-  not effect downstream configuration. See for example
+  not effect downstream. See for example
   [here](https://github.com/tosmi-gitops/onboarding/blob/main/tenants/dinosaurs/namespaces/cicd/kustomization.yaml).
+
+  Using a newer base for a namespace requires an **explicit** change
+  on purpose.
 
 `onboarding-base` is a way to share common configurations, relevant
 for all namespaces in all clusters. For example it defines the
@@ -143,7 +147,7 @@ following t-shirt shape sizes for projects:
 - [medium](https://github.com/tosmi-gitops/onboarding-base/tree/main/overlays/medium)
 - [large](https://github.com/tosmi-gitops/onboarding-base/tree/main/overlays/large)
 
-Because of using kustomize, there are several ways to overwrite base
+Because of using kustomize, there are ways to overwrite base
 settings. For example in the CI/CD namespace for the
 [goldfish](https://github.com/tosmi-gitops/onboarding/blob/main/tenants/goldfish/namespaces/cicd/kustomization.yaml)
 project we use the medium overlay from `onboarding-base`, but
@@ -151,7 +155,7 @@ overwrite the memory limit to 7Gi.
 
 ## Additional Folders
 
-- `onboarding`: Contains ArgoCD ApplicationSets for creating ArgoCD
+- `onboarding`: Contains ArgoCD ApplicationSet's for creating ArgoCD
   Applications from the tenants folder.
 - `argocd`: Additional ArgoCD configuration like repositories and clusters.
 - `docs`: Diagrams and other documentation artifacts
