@@ -13,6 +13,8 @@ helm (see [here](#tools-used)).
 * [Requirements considered](#requirements-considered)
 * [Tools used](#tools-used)
 * [Tenants organization](#tenants-organization)
+* [Additional Folders](#additional-folders)
+* [OpenShift Gitops](#openshift-gitops)
 
 ## General scheme
 
@@ -52,25 +54,31 @@ contains manifest for the actual onboarding of tenants.
 3. As application ops I would like to create namespaces in the PROD cluster
 4. As application ops I would like to overwrite namespace defaults
    depending on clusters
+5. As a platform team I would like to leverage a common base for all
+   Kubernetes manifests.
+
 
 ## Requirements considered
 
-1. A tenant could have multiple namespaces
-2. Not all namespaces are in all clusters
+1. A tenant as one to many namespaces
+2. Not all tenant namespaces are in all clusters
 3. Namespaces might have different settings per cluster
    e.g.
-    - cicd namespace on cluster dev is allowed to create 100 pods
-	- cicd namespace on cluster prod is allowed to create 10 pods
+    - CI/CD namespace on cluster dev is allowed to create 100 pods
+	- CI/CD namespace on cluster prod is allowed to create 10 pods
 
 ## Tools used
 
-We only require Kustomize for rendering manifests to onboard
-tenants. Helm is also possible and there are examples available see
+We required [kustomize](https://kustomize.io) for rendering manifests
+to onboard tenants. Helm is also possible and there are examples
+available, see
 [helper-proj-onboarding](https://github.com/tjungbauer/helm-charts/tree/main/charts/helper-proj-onboarding)
 and the customers folder in
 [openshift-cluster-bootstrap](https://github.com/tjungbauer/openshift-cluster-bootstrap/tree/main/customers)
 
 ## Tenants organization
+
+We leverage the following folder structure for tenants:
 
 ```
 tenants/
@@ -101,6 +109,13 @@ and the onboarding-base repository:
 
 ![connections](https://raw.githubusercontent.com/tosmi-gitops/onboarding/main/docs/connections.png)
 
+## Additional Folders
+
+- `onboarding`: Contains ArgoCD ApplicationSets for creating ArgoCD
+  Applications from the tenants folder.
+- `argocd`: Additional ArgoCD configuration like repositories and clusters.
+- `docs`: Diagrams and other documentation artifacts
+
 ## OpenShift Gitops
 
 OpenShift GitOps leverages ArgoCD to sync Kubernetes manifests from a
@@ -108,6 +123,12 @@ GIT repository to a cluster.
 
 An ArgoCD `Application` defines which repository to sync into which cluster.
 
-ArgoCD uses projects to organize differe
+ArgoCD uses
+[projects](https://argo-cd.readthedocs.io/en/stable/user-guide/projects/)
+to organize applications in groups.
 
-Specifically we use ApplicationSets to
+Specifically we use
+[ApplicationSets](https://argo-cd.readthedocs.io/en/stable/user-guide/application-set/)
+to generate required Applications. See
+[onboarding/onboarding-applicationset.yaml](onboarding/onboarding-applicationset.yaml)
+for more information.
