@@ -83,3 +83,8 @@ Within tenants we have a `clusters/` folder for every cluster the
 tenant should be able to use. In the corresponding cluster folder
 (e.g. `prod`) we include namespaces that the cluster requires from the
 `namespaces/` folder.
+
+The following diagram depicts connections between clusters, namespaces
+and the onboarding-base repository:
+
+![connections](https://github.com/tosmi-gitops/onboarding/docs/connections.png)
