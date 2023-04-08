@@ -1,7 +1,7 @@
 package main
 
-import "fmt"
+import "verifier/pkg/cmd/verifier"
 
 func main() {
-	fmt.Println("Hello, World!")
+	verifier.Execute()
 }
