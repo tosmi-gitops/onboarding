@@ -1,7 +1,12 @@
 package main
 
-import "verifier/pkg/cmd/verifier"
+import (
+	"os"
+	"path/filepath"
+	"verifier/pkg/cmd/verifier"
+)
 
 func main() {
-	verifier.Execute()
+	basename := filepath.Base(os.Args[0])
+	verifier.Execute(basename)
 }
