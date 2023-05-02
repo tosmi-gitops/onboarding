@@ -6,4 +6,4 @@ resources:
 
 
 # here we could patch the cicd namespaces for the hub cluster
-patches:
+# patches:
