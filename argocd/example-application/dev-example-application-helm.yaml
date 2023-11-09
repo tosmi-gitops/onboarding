@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-wave: '4'
+  labels:
+    gitops.ownedBy: cluster-config
+  name: dev-example-applicatoin-helm
+spec:
+  destination:
+    namespace: dinosaurs-dev
+    server: https://kubernetes.default.svc
+  project: example-application
+  source:
+    path: helm/example-application
+    repoURL: https://github.com/tosmi-gitops/example-application.git
+    targetRevision: main
+  syncPolicy:
+    # automated:
+    #   selfHeal: true
