@@ -40,6 +40,9 @@ We defined two repositories:
 is used to provide manifests reused for all tenants (see
 [Nomenclature](#nomenclature)).
 
+We also define different T-Shirt sizes for namespaces in the `base`
+respository.
+
 [Onboarding](https://github.com/tosmi-gitops/onboarding-base.git)
 contains manifest for the actual onboarding of tenants.
 
@@ -51,13 +54,14 @@ contains manifest for the actual onboarding of tenants.
 ## Use cases considered
 
 1. As developer I would like to get namespaces in a DEV cluster
-2. As application ops I would like to create namespaces in the DEV cluster
-3. As application ops I would like to create namespaces in the PROD cluster
-4. As application ops I would like to overwrite namespace defaults
-   depending on clusters
+2. As application ops I require a namespaces in the DEV cluster
+3. As application ops I require namespaces in the TEST cluster
+3. As application ops I require namespaces in the PROD cluster
+4. As application ops I require different settings per cluster
+5. As a platform team I would like to support different resource
+   quotas for namespaces depending on clusters
 5. As a platform team I would like to leverage a common base for all
    Kubernetes manifests.
-
 
 ## Requirements considered
 
@@ -67,6 +71,7 @@ contains manifest for the actual onboarding of tenants.
    e.g.
     - CI/CD namespace on cluster dev is allowed to create 100 pods
 	- CI/CD namespace on cluster prod is allowed to create 10 pods
+4. Resource requirements might be different between clusters
 
 ## Tools used
 
@@ -88,16 +93,21 @@ We leverage the following folder structure for tenants:
 tenants/
 ├── dinosaurs
 │   ├── clusters
-│   │   ├── in-cluster
-│   │   └── prod
+│   │   ├── dev
+│   │   ├── prod
+│   │   └── test
 │   └── namespaces
-│       ├── cicd
-│       └── dev
+│       ├── dinosaurs-accounting
+│       │   ├── base
+│       │   ├── large
+│       │   └── medium
+│       └── dinosaurs-cicd
 └── goldfish
     ├── clusters
     │   └── prod
     └── namespaces
-        └── cicd
+        ├── goldfish-bookstore
+        └── goldfish-cicd
 ```
 
 Every new tenant requiring onboarding is represented by a folder in
@@ -106,7 +116,7 @@ the `tenants` directory.
 Within tenants we have a `clusters/` folder for every cluster the
 tenant should be able to use. In the corresponding cluster folder
 (e.g. `dinosaurs/clusters/prod`) we include namespaces that should be
-deployed to clusters. Those namespaces are defined in
+deployed to the `prod` cluster. Those namespaces are defined in
 `dinosaurs/namespaces/`.
 
 The following diagram depicts connections between clusters, namespaces
@@ -116,7 +126,7 @@ and the onboarding-base repository:
 
 ## Sharing a common base of configurations
 
-Namespaces in `<tenants>/<tenant name>/namespaces` a sharing a common
+Namespaces in `<tenants>/<tenant name>/namespaces` share a common
 base. The base is in a separate GIT repository
 [onboarding-base](https://github.com/tosmi-gitops/onboarding-base.git).
 
@@ -133,11 +143,10 @@ as `onboarding` but we have reasons to use a dedicated repository:
 - **Allow usage of dedicated tags / releases**: We use tags to
   reference a (hopefully ) frozen state of the `onboarding-base`
   repository. If `onboarding-base` changes upstream the changes will
-  not effect downstream. See for example
+  not effect downstream namespaces. See for example
   [here](https://github.com/tosmi-gitops/onboarding/blob/main/tenants/dinosaurs/namespaces/cicd/kustomization.yaml).
 
-  Using a newer base for a namespace requires an **explicit** change
-  on purpose.
+  Using a newer base for a namespace requires an **explicit** change.
 
 `onboarding-base` is a way to share common configurations, relevant
 for all namespaces in all clusters. For example it defines the
