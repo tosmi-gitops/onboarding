@@ -1,0 +1,15 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+resources:
+  - ../../namespaces/goldfish-cicd
+
+# in the dev cluster we need more configmaps in the cicd namespace
+patches:
+  - target:
+      kind: ResourceQuota
+      name: quota-objects
+    patch: |-
+      - op: replace
+        path: /spec/hard/configmaps
+        value: 200

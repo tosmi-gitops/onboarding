@@ -122,7 +122,7 @@ deployed to the `prod` cluster. Those namespaces are defined in
 The following diagram depicts connections between clusters, namespaces
 and the onboarding-base repository:
 
-![connections](https://raw.githubusercontent.com/tosmi-gitops/onboarding/main/docs/connections.png)
+![overview](https://raw.githubusercontent.com/tosmi-gitops/onboarding/main/docs/overview.png)
 
 ## Sharing a common base of configurations
 
