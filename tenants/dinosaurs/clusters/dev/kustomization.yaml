@@ -2,9 +2,7 @@ kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 
 resources:
-  - ../../namespaces/cicd
-  - ../../namespaces/dev
-  - ../../namespaces/prod
+  - ../../namespaces/dinosaurs-cicd
 
 # here we could patch the cicd namespaces for the hub cluster
 patches:
